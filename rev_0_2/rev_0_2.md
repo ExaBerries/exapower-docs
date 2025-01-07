@@ -13,11 +13,11 @@ A quick overview of the pcb, more details on each section can be found further b
 
 #### starting with the front
 
-The pcb can be split up into 5 main areas:
-1: output connection areas and output filtering (red)
-2: phases and input filtering (dark blue)
-3: pwm controller (green)
-4: micro (orange)
+The pcb can be split up into 5 main areas:\
+1: output connection areas and output filtering (red)\
+2: phases and input filtering (dark blue)\
+3: pwm controller (green)\
+4: micro (orange)\
 5: en/pgood signals (light blue)
 
 ![rev-0-2-overview](rev-0-2-overview.png)
