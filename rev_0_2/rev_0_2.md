@@ -5,7 +5,7 @@ ncp81274\
 mostly 0402\
 118x80mm
 
-![rev-0-2](rev-0-2-kicad.png)
+![rev-0-2](rev-0-2-kicad-render.png)
 
 ## quick tour
 
