@@ -124,5 +124,123 @@ A link to the safe operating area graph in desmos: https://www.desmos.com/calcul
 
 ## micro in depth
 
+### pinout
+
+| Function   | PIN | PIN | Function |
+| ---------- | --- | --- | -------- |
+| VCC        |   1 |  14 |      GND |
+| M_INPUT    |   2 |  13 | USR_IN_1 |
+| OUT_SENSE  |   3 |  12 | USR_IN_0 |
+| IOUT_SENSE |   4 |  11 |       EN |
+| M_EN       |   5 |  10 |     PROG |
+| PWM_VID    |   6 |   9 |      SCL |
+| THERM_WARN |   7 |   8 |      SDA |
+
+M_INPUT is the input pin used by the ADC to read the voltage produced by the trimpot, by defualt this is used to set the output voltage but other options are possible via firmware.
+
+OUT_SENSE is connected to the internal positive sense line in the pcb. It is read by the adc as single ended relative to ground potential by the micro. Therefore it might not match the voltage read at the differential read point even after accounting for the ADC errors. 
+
+IOUT_SENSE is connected to read the IOUT voltage produced by the ncp81274. 
+
+M_EN is the enable signal provided by the micro to the dual AND gate that controls the en signal to the ncp81274. This pin is used by the micro to control when the vrm is turned on and to turn it off in the event of a protection mechanism activating on the ncp81274 or unsafe condition detected by the micro.
+
+PWM_VID is the output pin for the about 100khz pwm signal to control the output voltage of the vrm. 
+
+THERM_WARN is the thermal warning signal from each of the sic620a, it is active low.
+
+SDA and SCL are the i2c interface connected to both the ncp81274 and the external headers. 
+
+PROG is reserved for programming the micro via updi, it connects directly to the middle pin on the prog header and the testpoint on the back.
+
+EN is the enable signal output from the dual AND gate and it is used by the micro to know if the EN signal is low when it shouldn't be.
+
+USR_IN_0 and USR_IN_1 are inputs (or outputs) for any extra user added features that can be added into the firmware at a later date. 
+
+### i2c interface
+
+The i2c interface spans registers 0x00 to 0x11. Registers 0x00 and 0x0E to 0x11 are read only while 0x01 to 0x0D are read/write. Although, the monitoring registers fall within this range and therefore can be written too, they will not do anything when written to and overwrite what was written.
+
+| Register | Name      |
+| -------- | --------- |
+| 0x00     |           |
+| 0x01     | FSW/LL    | 
+| 0x02     | CONFIG    |
+| 0x03     | RE LSB    |
+| 0x04     | RE MSB    |
+| 0x05     | INFO A    |
+| 0x06     | INFO B    |
+| 0x07     | VOUT LSB  |
+| 0x08     | VOUT MSB  |
+| 0x09     | IOUT LSB  |
+| 0x0A     | IOUT MSB  |
+| 0x0B     | USR LSB   |
+| 0x0C     | USR MSB   |
+| 0x0D     | STATE     |
+| 0x0E     | VER MAJOR |
+| 0x0F     | VER MINOR |
+| 0x10     | DETECT A  |
+| 0x11     | DETECT B  |
+
+#### 0x01 FSW/LL
+used for configuring the switching frequency and loadline
+
+#### 0x02 CONFIG
+used to configure behavior with ocp and to save things such as boot voltage
+| bit | function   |
+| --- | ---------- | 
+| 0   |            |
+| 1   | UVP flag   |
+| 2   | therm flag |
+| 3   | 
+| 4   |
+| 5   |
+| 6   |
+| 7   |
+
+#### 0x03/0x04 RE 
+
+#### 0x05 INFO A
+| bit | function    |
+| --- | ----------- |
+| 0:4 | max voltage |
+| 5:7 | min voltage |
+
+max and min voltage are 4 bits with 100mV increments, min voltage has an offset of 600mV and max voltage an offset of 1200mV
+
+#### 0x06 INFO B
+| bit | function    |
+| --- | ----------- |
+
+min voltage is in 
+
+#### 0x07/0x08 VOUT 
+
+#### 0x09/0x0A IOUT
+
+#### 0x0B/0x0C USR
+
+#### 0x0D STATE
+| bit | function   |
+| --- | ---------- | 
+| 0   |            |
+| 1   | UVP flag   |
+| 2   | therm flag |
+| 3   | 
+| 4   |
+| 5   |
+| 6   |
+| 7   |
+
+
+#### 0x0E/0x0F VER MAJOR/MINOR
+used to detect the firmware version 
+
+#### 0x10/0x11 DETECT A/B
+used for auto detecting the address to find the micro
+
+
+
+#### 
+
 ## firmware
 
