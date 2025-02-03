@@ -158,33 +158,43 @@ USR_IN_0 and USR_IN_1 are inputs (or outputs) for any extra user added features 
 
 ### i2c interface
 
-The i2c interface spans registers 0x00 to 0x11. Registers 0x00 and 0x0E to 0x11 are read only while 0x01 to 0x0D are read/write. Although, the monitoring registers fall within this range and therefore can be written too, they will not do anything when written to and overwrite what was written.
+The i2c interface spans registers 0x00 to 0x3F. All registers can be read but only 0x10 to 0x1F are read/write. The debug registers (0x30 to 0x3F) are only active in debug builds.
 
-| Register | Name      |
-| -------- | --------- |
-| 0x00     |           |
-| 0x01     | FSW/LL    | 
-| 0x02     | CONFIG    |
-| 0x03     | RE LSB    |
-| 0x04     | RE MSB    |
-| 0x05     | INFO A    |
-| 0x06     | INFO B    |
-| 0x07     | VOUT LSB  |
-| 0x08     | VOUT MSB  |
-| 0x09     | IOUT LSB  |
-| 0x0A     | IOUT MSB  |
-| 0x0B     | USR LSB   |
-| 0x0C     | USR MSB   |
-| 0x0D     | STATE     |
-| 0x0E     | VER MAJOR |
-| 0x0F     | VER MINOR |
-| 0x10     | DETECT A  |
-| 0x11     | DETECT B  |
+| Register | 0x0 | 0x1 | 0x2 | 0x3 | 0x4 | 0x5 | 0x6 | 0x7 | 0x8 | 0x9 |0xA | 0xB | 0xC | 0xD | 0xE | 0xF |
+| -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 0x00     | FF  | ver major | ver minor | detect | detect | debug |
+| 0x01     | FSB/LL | config | usr | usr | cmd | cmd | info a | info b |
+| 0x02     | vout | vout | iout | iout | usr | usr | state |
+| 0x03     | debug state | debug en | debug th warn |
+| 0x04     | 
+| 0x05     | 
+| 0x06     | 
+| 0x07     | 
+| 0x08     | 
+| 0x09     | 
+| 0x0A     | 
+| 0x0B     | 
+| 0x0C     | 
+| 0x0D     | 
+| 0x0E     | 
+| 0x0F     | 
 
-#### 0x01 FSW/LL
+#### 0x00
+always FF
+
+#### 0x01/0x02 VER MAJOR/MINOR
+used to detect the firmware version 
+
+#### 0x03/0x04 DETECT A/B
+used for auto detecting the address to find the micro
+
+#### 0x05 debug
+used for indicating if the firmware is a debug build with the debug registers active
+
+#### 0x10 FSW/LL
 used for configuring the switching frequency and loadline
 
-#### 0x02 CONFIG
+#### 0x11 CONFIG
 used to configure behavior with ocp and to save things such as boot voltage
 | bit | function   |
 | --- | ---------- | 
@@ -197,9 +207,12 @@ used to configure behavior with ocp and to save things such as boot voltage
 | 6   |
 | 7   |
 
-#### 0x03/0x04 RE 
+#### 0x12/0x13 USR
+value to use instead of the user input value from the trimpot
 
-#### 0x05 INFO A
+#### 0x14/0x15 CMD
+
+#### 0x16 INFO A
 | bit | function    |
 | --- | ----------- |
 | 0:4 | max voltage |
@@ -207,19 +220,22 @@ used to configure behavior with ocp and to save things such as boot voltage
 
 max and min voltage are 4 bits with 100mV increments, min voltage has an offset of 600mV and max voltage an offset of 1200mV
 
-#### 0x06 INFO B
+#### 0x17 INFO B
 | bit | function    |
 | --- | ----------- |
 
 min voltage is in 
 
-#### 0x07/0x08 VOUT 
+#### 0x20/0x21 VOUT 
+vout monitoring
 
-#### 0x09/0x0A IOUT
+#### 0x22/0x23 IOUT
+iout monitoring
 
-#### 0x0B/0x0C USR
+#### 0x24/0x25 USR
+monitor user input from trimpot
 
-#### 0x0D STATE
+#### 0x26 STATE
 | bit | function   |
 | --- | ---------- | 
 | 0   |            |
@@ -230,17 +246,6 @@ min voltage is in
 | 5   |
 | 6   |
 | 7   |
-
-
-#### 0x0E/0x0F VER MAJOR/MINOR
-used to detect the firmware version 
-
-#### 0x10/0x11 DETECT A/B
-used for auto detecting the address to find the micro
-
-
-
-#### 
 
 ## firmware
 
