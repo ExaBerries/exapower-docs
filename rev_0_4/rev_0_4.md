@@ -102,7 +102,7 @@ At higher output voltages, there is increased power loss which derates the liste
 
 ![exapower-safe-op-area](safe-op-area.png)
 
-Here are some values from the table of the more conservative estimate (low to no airflow, ~16W of power loss) to make it a bit easier:
+Here are some values from the graph of the more conservative estimate (low to no airflow, ~16W of power loss) to make it a bit easier:
 | Output Current (A) | Voltage (V) |
 | ------------------ | ----------- |
 | 180                | 2.41        |
@@ -140,7 +140,7 @@ OUT_SENSE is connected to the internal positive sense line in the pcb. It is rea
 
 IOUT_SENSE is connected to read the IOUT voltage produced by the ncp81274, or the signal inverted and offset by an op amp.
 
-PGOOD is sensing the pgood signal coming from the micro to detect unrequested shutdowns.
+PGOOD is sensing the pgood signal coming from the controller to detect unrequested shutdowns.
 
 PWM_VID is the output pin for the about 100khz pwm signal to control the output voltage of the vrm. 
 
